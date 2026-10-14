@@ -74,8 +74,8 @@ S20 — README "Implementation order" (verbatim): "1. Model policy versions, rul
 
 | ID | Task | Specs | Route | Status / evidence |
 | --- | --- | --- | --- | --- |
-| T0 | Bootstrap: isolated repository, MIT LICENSE, `.gitignore`, `go.mod` + ADK Go v2, CI workflow, this document | S1, S3, A9 | inline | done — see L7, L8 |
-| T1 | Versioned policy contract + validation with RED tests (`internal/policy`) | A1, A5, S5, S6 | inline | pending |
+| T0 | Bootstrap: isolated repository, MIT LICENSE, `.gitignore`, `go.mod` + ADK Go v2, CI workflow, this document | S1, S3, A9 | inline | done — `6658d3a`, `22ed537`; CI `38488173848` `success`, L7-L9 |
+| T1 | Versioned policy contract + validation with RED tests (`internal/policy`) | A1, A5, S5, S6 | inline | done — RED `no non-test Go files in internal/policy` (exit 1), GREEN 17 tests, `528a31e`, L11 |
 | T2 | Rule parser, effective-date service and version-conflict detection (`internal/policy`) | A3, A5, S9, S13 | inline | pending |
 | T3 | Rule trace + condition/branch validation as pure services (`internal/trace`) | A2, A4, A6, S20.3 | inline | pending |
 | T4 | ADK agent: policy-grounded instruction, response schema, keyed session, citation validation (`internal/procedure`) | A2, A3, S16, S17 | inline | pending |
@@ -131,3 +131,17 @@ L8 — bootstrap evidence (T0). `git init -b main` created the isolated reposito
 L9 — CI and delivery evidence (T0 close). Pushing `6658d3a` to `main` triggered run `38488173848`, completed `success` in 15s (`test`, job `115606773956`): `gofmt` and `go build` ran unconditionally and passed, while `go vet` and `go test` were skipped by the `hashFiles` guard exactly as designed — the same module state that failed CI on `executive-report-agent`'s bootstrap commit (its L19) is green here on the first push, because the guard was copied from the start instead of after the failure. `actions/setup-go` resolved `go 1.26.6` from `go.mod`. The single annotation is informational: the `ubuntu-latest` label migrates to Ubuntu 26 from 2026-10-19, the same annotation `executive-report-agent` records, needing no action now. Remote state after T0: `refs/heads/main` = `6658d3a` and no other branch; the repository is `PUBLIC`, license `mit`, default branch `main`, description set, topics `adk, compliance, enterprise, gemini, golang, governance, policy-management`. The feature branch is deliberately not created at T0: it would be identical to `main` until T1 produces the first work unit, and a branch with no diff cannot become the PR the delivery step promises.
 
 L10 — ENGRAM MIRROR PENDING: the local document is authoritative and current. `mem_save` for this feature timed out twice against `http://127.0.0.1:7437` (15s limit), and `mem_search` and `mem_doctor` then failed the same way with `the server accepted the connection but did not respond`, so no claim is made that either write landed and neither was retried blindly, to avoid duplicating a write that may already have been applied. This blocks no check: the document above is complete and committed, and the mirror must be synchronized once the Engram server answers again.
+
+L11 — evidence (T1): commit `528a31e` on `feature/enterprise-policy-procedures`, the first work unit on this branch. RED observed as the house pattern does it: `github.com/GhandyP/enterprise-policy-procedures/internal/policy: no non-test Go files` with exit 1. GREEN as `ok ... internal/policy` with 17 tests, `gofmt -l internal/` printing nothing, and `go vet ./...` and `go build ./...` exiting 0. The tests live in the external `policy_test` package on purpose, so they can only reach the exported API. Two design points landed with it: `PolicyInput` keeps S5's three fields exactly and `Select` returns the sections of the selected version rather than the union of every supplied version — without that, a citation to a rule owned by a sibling version would be undetectable, and A3 depends on detecting it — and `Parse` reports every issue in one pass, each carrying the `path` that locates it, instead of stopping at the first defect.
+
+L12 — gap found while implementing T1, closed by decision. A4 requires that a rule marked as requiring approval, with no approval gate attached, blocks the compile, and S5's `Procedure` carries `approvals[]`; but the contract committed in T1 has no place in the *input* for an approval gate, so A4 had nothing to read. Decision: a gate is attached to the version it belongs to, and its shape is frozen here so the fixture work can start against it without waiting for the Go type:
+
+```json
+"approvals": [
+  { "id": "A1", "ruleID": "R2", "approver": "Name or role", "role": "IT Security" }
+]
+```
+
+So `VersionedPolicy` gains `approvals[]`, each gate naming the `ruleID` it gates, the `approver` and the `role`. T2 adds the type and its validation; A4 is implemented in T3. The omission is recorded rather than rewritten, because T1's commit is already the reviewable unit for S5's shape and no requirement changed.
+
+L13 — ENGRAM MIRROR STILL PENDING, re-checked when the listener answered again: `http://127.0.0.1:7437/` returns 404 quickly, but the API path still hangs, so `mem_search` timed out again with `the server accepted the connection but did not respond` after the earlier double `mem_save` timeout. The write state of those first two attempts remains unknown, so neither was retried blindly. The repository document stays authoritative and complete.
