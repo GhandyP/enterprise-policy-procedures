@@ -1,0 +1,44 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: gofmt
+        run: |
+          unformatted="$(gofmt -l .)"
+          if [ -n "$unformatted" ]; then
+            echo "these files need gofmt:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      # A brand-new module can legitimately have no Go packages yet (the
+      # bootstrap commit of an empty repository), where vet and test exit 1 with
+      # "no packages" instead of passing. Only those two steps are skipped in
+      # that state; gofmt and build still run unconditionally.
+      - name: go vet
+        if: ${{ hashFiles('**/*.go') != '' }}
+        run: go vet ./...
+
+      - name: go build
+        run: go build ./...
+
+      - name: go test
+        if: ${{ hashFiles('**/*.go') != '' }}
+        run: go test ./... -count=1

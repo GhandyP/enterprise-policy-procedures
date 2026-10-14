@@ -1,0 +1,30 @@
+# Compiled binaries
+/enterprise-policy-procedures
+*.exe
+*.test
+*.out
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Real policy material stays private: never commit an internal policy corpus
+/policies/private/
+*.docx
+
+# Generated procedures
+/procedures/
+*.procedure.json
+
+# Go tooling
+/.tmp/
+/go.work
+/go.work.sum
+/.gomodcache/
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
