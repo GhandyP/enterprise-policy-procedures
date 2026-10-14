@@ -33,8 +33,19 @@ type Corpus struct {
 
 // VersionedPolicy is one version of a policy.
 type VersionedPolicy struct {
-	Version  string    `json:"version"`
-	Sections []Section `json:"sections"`
+	Version   string     `json:"version"`
+	Sections  []Section  `json:"sections"`
+	Approvals []Approval `json:"approvals,omitempty"`
+}
+
+// Approval is the human gate a rule that requires approval must have before its
+// step can leave the draft. ID, RuleID and Approver are required; Role is
+// optional and describes the function the approver holds in the policy.
+type Approval struct {
+	ID       string `json:"id"`
+	RuleID   string `json:"ruleID"`
+	Approver string `json:"approver"`
+	Role     string `json:"role,omitempty"`
 }
 
 // Section groups the rules a policy owner filed together.
@@ -179,6 +190,37 @@ func (v VersionedPolicy) validate(versionPath string) []Issue {
 					Message: fmt.Sprintf("rule id %q is defined more than once inside version %q; one version may define a rule id only once", rule.ID, v.Version),
 				})
 			}
+		}
+	}
+
+	for a, approval := range v.Approvals {
+		issues = append(issues, approval.validate(fmt.Sprintf("%s.approvals[%d]", versionPath, a))...)
+	}
+
+	return issues
+}
+
+func (a Approval) validate(approvalPath string) []Issue {
+	var issues []Issue
+
+	required := []struct {
+		field string
+		value string
+		why   string
+	}{
+		{"id", a.ID, "every approval gate must be identified by an id"},
+		{"ruleID", a.RuleID, "an approval gate must name the rule it gates"},
+		{"approver", a.Approver, "an approval gate with no approver claims an approval no person gave"},
+	}
+
+	for _, field := range required {
+		if field.value == "" {
+			issues = append(issues, Issue{
+				Code:    CodeInvalidInput,
+				Path:    approvalPath + "." + field.field,
+				RuleID:  a.RuleID,
+				Message: field.why,
+			})
 		}
 	}
 
