@@ -1,0 +1,30 @@
+{
+  "policyID": "NET-REMOTE-ACCESS",
+  "effectiveDate": "2026-03-01",
+  "versions": [
+    {
+      "version": "1.4",
+      "sections": [
+        {
+          "id": "S1",
+          "title": "Remote access",
+          "rules": [
+            {
+              "id": "RA-1",
+              "text": "Remote access to company systems requires multi-factor authentication.",
+              "owner": "Network Security",
+              "effectiveFrom": "2024-01-01"
+            },
+            {
+              "id": "RA-2",
+              "text": "The legacy VPN client was retired on 31 December 2025 and must not be used.",
+              "owner": "Network Security",
+              "effectiveFrom": "2024-01-01",
+              "effectiveTo": "2025-12-31"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

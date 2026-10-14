@@ -1,0 +1,54 @@
+{
+  "policyID": "DPR-DATA-RETENTION",
+  "effectiveDate": "2026-01-01",
+  "versions": [
+    {
+      "version": "5.0",
+      "sections": [
+        {
+          "id": "S1",
+          "title": "Retention periods",
+          "rules": [
+            {
+              "id": "DR-1",
+              "text": "Customer records are deleted seven years after the business relationship ends.",
+              "owner": "Data Protection Officer",
+              "effectiveFrom": "2024-06-01",
+              "condition": "recordType == customer"
+            },
+            {
+              "id": "DR-2",
+              "text": "Supplier records are deleted ten years after the business relationship ends.",
+              "owner": "Data Protection Officer",
+              "effectiveFrom": "2024-06-01",
+              "condition": "recordType == supplier"
+            },
+            {
+              "id": "DR-3",
+              "text": "Archived supplier records are kept until the archive review completes.",
+              "owner": "Data Protection Officer",
+              "effectiveFrom": "2024-06-01",
+              "exceptionOf": "DR-2",
+              "condition": "recordType == archive"
+            },
+            {
+              "id": "DR-4",
+              "text": "A deletion run above 10000 records requires the Data Protection Officer's sign-off.",
+              "owner": "Data Protection Officer",
+              "effectiveFrom": "2026-01-01",
+              "requiresApproval": true
+            }
+          ]
+        }
+      ],
+      "approvals": [
+        {
+          "id": "AP-1",
+          "ruleID": "DR-4",
+          "approver": "Data Protection Officer",
+          "role": "Legal"
+        }
+      ]
+    }
+  ]
+}

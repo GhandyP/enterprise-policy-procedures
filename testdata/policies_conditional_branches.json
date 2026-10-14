@@ -1,0 +1,38 @@
+{
+  "policyID": "PROC-PURCHASE-APPROVALS",
+  "effectiveDate": "2026-05-01",
+  "versions": [
+    {
+      "version": "3.0",
+      "sections": [
+        {
+          "id": "S1",
+          "title": "Approval route",
+          "rules": [
+            {
+              "id": "PA-1",
+              "text": "Purchases below 5000 EUR are approved by the requesting manager.",
+              "owner": "Procurement Lead",
+              "effectiveFrom": "2026-05-01",
+              "condition": "purchaseSize == small"
+            },
+            {
+              "id": "PA-2",
+              "text": "Purchases between 5000 and 50000 EUR are approved by the department head.",
+              "owner": "Procurement Lead",
+              "effectiveFrom": "2026-05-01",
+              "condition": "purchaseSize == medium"
+            },
+            {
+              "id": "PA-3",
+              "text": "Purchases above 50000 EUR are approved by the procurement committee.",
+              "owner": "Procurement Lead",
+              "effectiveFrom": "2026-05-01",
+              "condition": "purchaseSize == large"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

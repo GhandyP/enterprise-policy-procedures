@@ -1,0 +1,30 @@
+{
+  "policyID": "FIN-CAPITAL-EXPENDITURE",
+  "effectiveDate": "2026-02-01",
+  "versions": [
+    {
+      "version": "1.0",
+      "sections": [
+        {
+          "id": "S1",
+          "title": "Approval limits",
+          "rules": [
+            {
+              "id": "CE-1",
+              "text": "Capital expenditure above 50000 EUR requires the finance committee's approval.",
+              "owner": "Finance Controller",
+              "effectiveFrom": "2026-02-01",
+              "requiresApproval": true
+            },
+            {
+              "id": "CE-2",
+              "text": "Capital expenditure below 50000 EUR is approved by the budget owner.",
+              "owner": "Budget Owner",
+              "effectiveFrom": "2026-02-01"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

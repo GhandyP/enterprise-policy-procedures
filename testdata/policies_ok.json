@@ -1,0 +1,102 @@
+{
+  "policyID": "IT-ACCEPTABLE-USE",
+  "effectiveDate": "2026-03-01",
+  "versions": [
+    {
+      "version": "3.0",
+      "sections": [
+        {
+          "id": "S1",
+          "title": "Scope",
+          "rules": [
+            {
+              "id": "AU-1",
+              "text": "This policy applies to every employee and contractor with access to company systems.",
+              "owner": "IT Security",
+              "effectiveFrom": "2025-01-01"
+            }
+          ]
+        },
+        {
+          "id": "S2",
+          "title": "Device enrolment",
+          "rules": [
+            {
+              "id": "AU-2",
+              "text": "Every device used to access company systems must be enrolled in device management before first use.",
+              "owner": "IT Security",
+              "effectiveFrom": "2025-01-01",
+              "requiresApproval": true
+            }
+          ]
+        }
+      ],
+      "approvals": [
+        {
+          "id": "AP-1",
+          "ruleID": "AU-2",
+          "approver": "Head of IT Security",
+          "role": "IT Security"
+        }
+      ]
+    },
+    {
+      "version": "3.1",
+      "sections": [
+        {
+          "id": "S1",
+          "title": "Scope",
+          "rules": [
+            {
+              "id": "AU-1",
+              "text": "This policy applies to every employee and contractor with access to company systems.",
+              "owner": "IT Security",
+              "effectiveFrom": "2025-01-01"
+            }
+          ]
+        },
+        {
+          "id": "S2",
+          "title": "Device enrolment",
+          "rules": [
+            {
+              "id": "AU-2",
+              "text": "Every device used to access company systems must be enrolled in device management before first use.",
+              "owner": "IT Security",
+              "effectiveFrom": "2025-01-01",
+              "requiresApproval": true
+            },
+            {
+              "id": "AU-3",
+              "text": "Personal devices owned by contractors are excluded from enrolment.",
+              "owner": "IT Security",
+              "effectiveFrom": "2026-03-01",
+              "exceptionOf": "AU-2",
+              "condition": "deviceOwner == contractor"
+            }
+          ]
+        },
+        {
+          "id": "S3",
+          "title": "Lost devices",
+          "rules": [
+            {
+              "id": "AU-4",
+              "text": "A lost or stolen device must be reported to the service desk within 24 hours of discovery.",
+              "owner": "Service Desk Manager",
+              "effectiveFrom": "2026-03-01"
+            }
+          ]
+        }
+      ],
+      "approvals": [
+        {
+          "id": "AP-1",
+          "ruleID": "AU-2",
+          "approver": "Head of IT Security",
+          "role": "IT Security"
+        }
+      ]
+    }
+  ]
+}
