@@ -1,0 +1,34 @@
+{
+  "policyID": "QMS-DOCUMENT-CONTROL",
+  "effectiveDate": "2026-01-15",
+  "versions": [
+    {
+      "version": "1.0",
+      "sections": [
+        {
+          "id": "S1",
+          "title": "Document control",
+          "rules": [
+            {
+              "id": "DC-1",
+              "owner": "Quality Manager",
+              "effectiveFrom": "2026-01-15"
+            },
+            {
+              "id": "DC-2",
+              "text": "Superseded documents are archived for six years.",
+              "owner": "Quality Manager",
+              "effectiveFrom": "2026-01-15"
+            },
+            {
+              "id": "DC-2",
+              "text": "Superseded documents are archived for ten years.",
+              "owner": "Quality Manager",
+              "effectiveFrom": "2026-01-15"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

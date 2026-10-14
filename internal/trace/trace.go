@@ -41,8 +41,8 @@ const (
 // Citation is the pair a procedure step must carry: the rule it came from and
 // the policy version that rule belongs to.
 type Citation struct {
-	RuleID  string
-	Version string
+	RuleID  string `json:"ruleID"`
+	Version string `json:"version"`
 }
 
 // String renders a citation the way a reader checks it against the policy.
@@ -53,12 +53,12 @@ func (c Citation) String() string {
 // Branch is the condition under which one rule applies, read out of the
 // predicate the policy declares. A rule with no condition has the zero Branch.
 type Branch struct {
-	RuleID    string
-	Field     string
-	Operator  string
-	Value     string
-	Exception bool
-	ExceptOf  string
+	RuleID    string `json:"ruleID"`
+	Field     string `json:"field"`
+	Operator  string `json:"operator"`
+	Value     string `json:"value"`
+	Exception bool   `json:"exception"`
+	ExceptOf  string `json:"exceptOf,omitempty"`
 }
 
 // Decision is one condition field together with every branch the version

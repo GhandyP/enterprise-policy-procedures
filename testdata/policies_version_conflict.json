@@ -1,0 +1,40 @@
+{
+  "policyID": "HR-EXPENSE-CLAIMS",
+  "effectiveDate": "2026-04-01",
+  "versions": [
+    {
+      "version": "2.1",
+      "sections": [
+        {
+          "id": "S1",
+          "title": "Submission",
+          "rules": [
+            {
+              "id": "EC-1",
+              "text": "Expense claims must be submitted within 30 days of the expense date.",
+              "owner": "Finance Controller",
+              "effectiveFrom": "2025-01-01"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "version": "2.2",
+      "sections": [
+        {
+          "id": "S1",
+          "title": "Submission",
+          "rules": [
+            {
+              "id": "EC-1",
+              "text": "Expense claims must be submitted within 45 days of the expense date.",
+              "owner": "Finance Controller",
+              "effectiveFrom": "2026-04-01"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
